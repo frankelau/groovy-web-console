@@ -20,16 +20,36 @@ import org.codehaus.groovy.control.CompilerConfiguration;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-public class ScriptHandler{
+/**
+ * 
+ * @author 陈作平(zuopingchen@163.com)
+ * @date 2013年9月7日
+ *
+ */
+public class ScriptHandler {
 	public void Handle(HttpServletRequest request, HttpServletResponse response) {
 		String prefix = request.getRequestURL().toString();
 		String code = request.getParameter("code");
-		WebApplicationContext applicationContext=WebApplicationContextUtils.getRequiredWebApplicationContext(request.getSession().getServletContext());
+		WebApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getSession().getServletContext());
 		String[] beans = applicationContext.getBeanDefinitionNames();
 		Binding binding = new Binding();
 		for (int i = 0; i < beans.length; i++) {
-			if (!beans[i].equalsIgnoreCase("baseServiceProvider"))
-				binding.setVariable(beans[i], applicationContext.getBean(beans[i]));
+			
+			
+			/*
+			 * when  there is a abstract spring bean XX (set abstract attr true) in
+			 * applicationContext the getBean(XX) mathed will throw exception 
+			 * and the process end 
+			 * so  use try catch to solve this problem 
+			 */
+			try {
+				Object abean = applicationContext.getBean(beans[i]);			
+				binding.setVariable(beans[i], abean);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			
 		}
 		// build groovy tool
 		GroovyClassLoader gcloader = new GroovyClassLoader(getClass().getClassLoader());
@@ -51,36 +71,37 @@ public class ScriptHandler{
 			re = ex;
 		}
 
-			ToStringBuilder.getDefaultStyle();
-			try {
-				response.setHeader("content-type", "text/html; charset=UTF-8");
-				HashMap<String , Object>   data = new HashMap<String,Object>();
-				data.put("outtext", re);
-				data.put("intext", code);
-				data.put("prefix", prefix);
-				this.getTemplate().process(data, response.getWriter());
-				
-				response.getWriter().flush();
-				response.getWriter().close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (TemplateException e) {
-				e.printStackTrace();
-			}
+		ToStringBuilder.getDefaultStyle();
+		try {
+			response.setHeader("content-type", "text/html; charset=UTF-8");
+			HashMap<String, Object> data = new HashMap<String, Object>();
+			data.put("outtext", re);
+			data.put("intext", code);
+			data.put("prefix", prefix);
+			this.getTemplate().process(data, response.getWriter());
+
+			response.getWriter().flush();
+			response.getWriter().close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (TemplateException e) {
+			e.printStackTrace();
+		}
 	}
-	private Template getTemplate(){
+
+	private Template getTemplate() {
 		Configuration cfg = new Configuration();
-		StringTemplateLoader  sloader = new StringTemplateLoader();
+		StringTemplateLoader sloader = new StringTemplateLoader();
 		sloader.putTemplate("temp", ResourceUtil.getFileAsString("groovy.ftl"));
 		cfg.setTemplateLoader(sloader);
-		Template template =null;
+		Template template = null;
 		try {
 			cfg.getTemplate("temp");
 			template = cfg.getTemplate("temp");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	
-		 return template;
+
+		return template;
 	}
 }
