@@ -1,9 +1,5 @@
 package com.yihaodian.sby.console;
 
-import freemarker.cache.StringTemplateLoader;
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
 import groovy.lang.Binding;
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyShell;
@@ -46,13 +42,13 @@ public class ScriptHandler {
 				Object abean = applicationContext.getBean(beans[i]);			
 				binding.setVariable(beans[i], abean);
 			} catch (Exception e) {
-				e.printStackTrace();
 			}
 			
 			
 		}
 		// build groovy tool
 		GroovyClassLoader gcloader = new GroovyClassLoader(getClass().getClassLoader());
+		System.out.print(binding.getVariables().keySet().toString());
 		try {
 			gcloader.parseClass(ResourceUtil.getFileAsString("GroovyTool.groovy"));
 		} catch (CompilationFailedException e) {
@@ -75,33 +71,22 @@ public class ScriptHandler {
 		try {
 			response.setHeader("content-type", "text/html; charset=UTF-8");
 			HashMap<String, Object> data = new HashMap<String, Object>();
-			data.put("outtext", re);
+			data.put("outtext",re);
 			data.put("intext", code);
 			data.put("prefix", prefix);
-			this.getTemplate().process(data, response.getWriter());
-
+			response.getWriter().write(this.getPage(data));
 			response.getWriter().flush();
 			response.getWriter().close();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (TemplateException e) {
-			e.printStackTrace();
-		}
+		} 
 	}
 
-	private Template getTemplate() {
-		Configuration cfg = new Configuration();
-		StringTemplateLoader sloader = new StringTemplateLoader();
-		sloader.putTemplate("temp", ResourceUtil.getFileAsString("groovy.ftl"));
-		cfg.setTemplateLoader(sloader);
-		Template template = null;
-		try {
-			cfg.getTemplate("temp");
-			template = cfg.getTemplate("temp");
-		} catch (IOException e) {
-			e.printStackTrace();
+	private String getPage(HashMap<String,Object> data) {
+		String template =ResourceUtil.getFileAsString("groovy.ftl");
+		for(String key :data.keySet()){
+			template=template.replaceAll("\\$\\{"+key+"\\}", data.get(key)==null ?"":data.get(key).toString());
 		}
-
-		return template;
+		return template.toString();
 	}
 }
