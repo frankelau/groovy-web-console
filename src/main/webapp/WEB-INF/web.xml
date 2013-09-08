@@ -23,7 +23,7 @@
     	<!-- 
     	<init-param>
 		        <param-name>envAuth</param-name>
-		        <param-value>xxx=xxx</param-value><!-- 正则表达式 -->
+		        <param-value>xxx=xxx</param-value>
     	</init-param>
     	 -->
 	</servlet>

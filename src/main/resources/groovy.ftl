@@ -2,10 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-<link rel="stylesheet" href="${prefix!}?file=codemirror.css">
-<link rel="stylesheet" href="${prefix!}?file=docs.css">
-<script src="${prefix!}?file=codemirror.js"></script>
-<script src="${prefix!}?file=groovy.js"></script>
+<link rel="stylesheet" href="${prefix}?file=codemirror.css">
+<link rel="stylesheet" href="${prefix}?file=docs.css">
+<script src="${prefix}?file=codemirror.js"></script>
+<script src="${prefix}?file=groovy.js"></script>
 
 
 <title>groovy shell</title>
@@ -13,12 +13,12 @@
 
 <body>
 <div id="inputbox">
-  <textarea id="intext" name="intext" onchange="change()">${intext!}</textarea>
+  <textarea id="intext" name="intext" onchange="change()">${intext}</textarea>
   <BUTTON onclick="sub()">submmit </BUTTON>
 </div>
 
  <textarea id="outtext">
- 	${outtext!}
+ 	${outtext}
  </textarea>
  
  
@@ -47,7 +47,7 @@
 	  
 	  
 	  function sub(){ 	
-		url="${prefix!}?code="+encodeURIComponent(editor.getValue());
+		url="${prefix}?code="+encodeURIComponent(editor.getValue());
 		window.location=url;
 	  }
 	  
