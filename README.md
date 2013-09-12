@@ -1,4 +1,4 @@
-java-web-console
+groovy-web-console
 ================
 
 
