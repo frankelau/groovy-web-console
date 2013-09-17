@@ -22,6 +22,23 @@ then the exact failure point found.
 the main tech behind this tool is groovy , it can compile and  run java code or groovy script at runtime.
 
 
-
-
-
+	<!--  webconsole -->
+	<servlet>
+		<servlet-name>groovyWebConsole</servlet-name>
+		<servlet-class>com.yihaodian.sby.console.ConsoleAction</servlet-class>
+		<init-param>
+		        <param-name>ipAuth</param-name>
+		        <param-value>127.0.0.1</param-value><!-- regex  -->
+         	</init-param>
+ 
+    	        <init-param>
+		        <param-name>envAuth</param-name>
+		        <param-value>xxx=yyy</param-value>
+                        <!--  xxx is the java envi key , and is a string 
+                              yyy is xxx's java envi value , yyy is a regex can match multiple evn --->
+         	</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>groovyWebConsole</servlet-name>
+		<url-pattern>/groovyWebConsole</url-pattern>
+	</servlet-mapping>
