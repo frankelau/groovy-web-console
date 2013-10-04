@@ -58,6 +58,6 @@ usage
 -----
 
 the groovy web console is just a embeded groovy script interpreter. so it can do all the thing that a groovy interpreter commond line do . the main difference are tow : groovy web console has a web interface and it can access spring or ibatis bean , so you can dynamically chech whether a  bean  behave the right way .
-1.open you browser and inpuy the url http://127.0.0.1/groovyWebConsole      your  url can be a little  different from this one,if your project is not the root project .
-2.input some groovy script and hit submit and you will get the script result
+1. open you browser and inpuy the url http://127.0.0.1/groovyWebConsole      your  url can be a little  different from this one,if your project is not the root project .
+2. input some groovy script and hit submit and you will get the script result
 
