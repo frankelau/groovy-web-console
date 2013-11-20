@@ -7,6 +7,7 @@ import groovy.lang.GroovyShell;
 import java.io.IOException;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -22,37 +23,15 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
  * @date 2013年9月7日
  * 
  */
-public class ScriptHandler {
+public class ScriptHandler{
+    
 	public void Handle(HttpServletRequest request, HttpServletResponse response) {
 		String prefix = request.getRequestURL().toString();
 		String code = request.getParameter("code");
-		WebApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getSession().getServletContext());
-		String[] beans = applicationContext.getBeanDefinitionNames();
-		Binding binding = new Binding();
-		for (int i = 0; i < beans.length; i++) {
-
-			/*
-			 * when there is a abstract spring bean XX (set abstract attr true)
-			 * in applicationContext the getBean(XX) mathed will throw exception
-			 * and the process end so use try catch to solve this problem
-			 */
-			try {
-				Object abean = applicationContext.getBean(beans[i]);
-				binding.setVariable(beans[i], abean);
-			} catch (Exception e) {
-			}
-
-		}
-		// build groovy tool
-		GroovyClassLoader gcloader = new GroovyClassLoader(getClass().getClassLoader());
-		CompilerConfiguration gcon = new CompilerConfiguration();
-		gcon.setScriptBaseClass("com.yihaodian.sby.console.ScriptTool");
-		// binding together
-		GroovyShell shell = new GroovyShell(gcloader, binding, gcon);
 		Object re = null;
 		try {
 			if (code != null && code.length() > 0)
-				re = shell.evaluate(code);
+				re = GroovyInit.shell.evaluate(code);
 		} catch (Exception ex) {
 			re = ex;
 		}
