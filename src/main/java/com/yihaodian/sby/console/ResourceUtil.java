@@ -9,7 +9,7 @@ import org.apache.commons.io.IOUtils;
 
 public class ResourceUtil{
 	public static String getFileAsString(String name){
-		Reader ts = new InputStreamReader(ScriptHandler.class.getClassLoader().getResourceAsStream("src"+File.separatorChar+name));
+		Reader ts = new InputStreamReader(ScriptHandler.class.getClassLoader().getResourceAsStream(name));
 		String re ="";
 		try {
 		    re =IOUtils.toString(ts);
