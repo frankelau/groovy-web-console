@@ -1,28 +1,12 @@
 package com.yihaodian.sby.console;
 
 
-import groovy.lang.Binding;
-import groovy.lang.GroovyClassLoader;
-import groovy.lang.GroovyShell;
-
 import java.io.IOException;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.codehaus.groovy.control.CompilerConfiguration;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-
-/**
- * webconsole
- * 
- * @author 陈作平zuopingchen@gmail.com
- * @date 2013-7-12
- * @version 1.0
- * 
- */
 public class ConsoleAction extends HttpServlet  {
 	private static final long serialVersionUID = 12346254546356L;
 	
@@ -38,9 +22,11 @@ public class ConsoleAction extends HttpServlet  {
 	public void doGet(HttpServletRequest request, HttpServletResponse response){
 		this.securityChech(request, response);
 		if(request.getParameter("file")!=null){
-			new ResourceHandler().Handle(request, response);
+			new ResourceHandler().Handle(request.getParameter("file"), response);
+		}else if(request.getParameter("code")!=null){
+			new ScriptHandler().Handle(request.getParameter("code"), response);
 		}else{
-			new ScriptHandler().Handle(request, response);
+		    new ResourceHandler().Handle("groovy.htm", response);
 		}
 	}
 	public void doPost(HttpServletRequest request, HttpServletResponse response){

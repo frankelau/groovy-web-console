@@ -29,7 +29,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>groovyWebConsole</servlet-name>
-		<url-pattern>/groovyWebConsole</url-pattern>
+		<url-pattern>/groovyWebConsole/*</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>

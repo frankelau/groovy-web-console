@@ -7,8 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class ResourceHandler {
 
-	public void Handle(HttpServletRequest request, HttpServletResponse response) {
-		String file = request.getParameter("file");
+	public void Handle(String file, HttpServletResponse response) {
 		try {
 			response.getWriter().write(ResourceUtil.getFileAsString(file));
 			response.getWriter().flush();
