@@ -49,7 +49,7 @@ if you donn't use maven then just put the jar file in "WEB-INF/lib" directory
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>groovyWebConsole</servlet-name>
-		<url-pattern>/groovyWebConsole</url-pattern>
+		<url-pattern>/groovyWebConsole/*</url-pattern>
 	</servlet-mapping>
 3.that is all and enjoy the groovy web console
 
