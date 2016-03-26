@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.yihaodian.sby.console</groupId>
+	<artifactId>groovy-web-console</artifactId>
+	<version>1.3-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>groovy-web-console</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
+		<maven-timestamp-plugin.version>0.1</maven-timestamp-plugin.version>
+		<maven-source-plugin.version>2.1.2</maven-source-plugin.version>
+		<maven-jar-plugin.version>2.3.1</maven-jar-plugin.version>
+		<maven-svn-revision-number-plugin.version>1.6</maven-svn-revision-number-plugin.version>
+		<maven-antrun-plugin.version>1.6</maven-antrun-plugin.version>
+	</properties>
+	<dependencies>
+		<dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-web</artifactId>
+		  <version>3.2.4.RELEASE</version>
+		</dependency>
+		<dependency>
+		  <groupId>javax.servlet</groupId>
+		  <artifactId>servlet-api</artifactId>
+		  <version>2.3</version>
+		</dependency>
+		<dependency>
+		  <groupId>org.codehaus.groovy</groupId>
+		  <artifactId>groovy-all</artifactId>
+		  <version>2.1.6</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.6</version>
+		</dependency>
+		<dependency>
+		  <groupId>com.google.code.gson</groupId>
+		  <artifactId>gson</artifactId>
+		  <version>2.2.4</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/*.*</include>
+				</includes>
+			</resource>
+		</resources>
+		<!-- <filters> <filter>${user.home}/backendlog.properties</filter> </filters> -->
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin.version}</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+
+			<!-- 打包源码 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>${maven-source-plugin.version}</version>
+				<configuration>
+					<attach>true</attach>
+					<encoding>UTF-8</encoding>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- 生成jar包,并写SVN当前版本号 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>${maven-jar-plugin.version}</version>
+				<configuration>
+					<jarName>${project.artifactId}-${project.version}-${SVN.committedRevision}</jarName>
+					<archive>
+						<index>true</index>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+						</manifest>
+						<manifestEntries>
+							<Implementation-Version>${project.artifactId}-${project.version}-${SVN.committedRevision}-${timestamp}</Implementation-Version>
+							<Specification-Version>${project.artifactId}-${project.version}-${SVN.committedRevision}-${timestamp}</Specification-Version>
+							<Build-Time>${timestamp}</Build-Time>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+
+
+			<!-- Maven Jetty Plugin -->
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>9.3.0.M2</version>
+				<configuration>
+					<systemProperties>
+						<systemProperty>
+							<name>jetty.port</name>
+							<value>81</value>
+						</systemProperty>
+						<systemProperty>
+							<name>ishow3d.env</name>
+							<value>test</value>
+						</systemProperty>
+					</systemProperties>
+					<!-- 每2秒的间隔扫描一次,实现热部署 -->
+					<scanIntervalSeconds>0</scanIntervalSeconds>
+					<stopPort>9966</stopPort>
+					<stopKey>3dishow</stopKey>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+
+
+</project>
