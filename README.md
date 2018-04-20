@@ -9,11 +9,12 @@ background
 it is a tool to  access java class at runtime.
 it can invoke spring bean, ibatis dao ,hibernate dao dynamically
 
-this characteristic make it very useful to debug online.
-when a java project deploy online , it is very difficult to access its inner component.
-so when a bug occur ,it is difficult to find exact failure point.
-in my company, in order to  solve this problem ,people always add log code and redeploy the project and monitor the log.
-this way is so time-consuming and ineffective.
+this characteristic make it a very useful tool to debug online system.
+it is very difficult to access its inner component in an online system, 
+thereby locating the failure point is not a easy work.
+in my company, in order to  solve this problem ,
+people always add log code and redeploy the project and monitor the log.
+this way is so time-consuming and inefficient.
 
 so i create this java web console to solve the problem.
 when a bug occur , i invoke all the required beans and check the result one by one 
